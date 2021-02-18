@@ -30,8 +30,12 @@ class AuthActivity : AppCompatActivity() {
                 FirebaseAuth.getInstance().createUserWithEmailAndPassword(email.text.toString(),
                     password.text.toString())
                     .addOnCompleteListener {
-                        if (it.isSuccessful) goHome(it.result?.user?.email?:"", ProviderType.BASIC)
-                        else showAlert()
+                        if (it.isSuccessful) {
+                            goHome(it.result?.user?.email?:"", ProviderType.BASIC)
+                        }
+                        else {
+                            showAlert()
+                        }
                     }
             }
         }
@@ -40,8 +44,12 @@ class AuthActivity : AppCompatActivity() {
                 FirebaseAuth.getInstance().signInWithEmailAndPassword(email.text.toString(),
                     password.text.toString())
                     .addOnCompleteListener {
-                        if (it.isSuccessful) goHome(it.result?.user?.email?:"", ProviderType.BASIC)
-                        else showAlert()
+                        if (it.isSuccessful) {
+                            goHome(it.result?.user?.email?:"", ProviderType.BASIC)
+                        }
+                        else {
+                            showAlert()
+                        }
                     }
             }
         }
@@ -50,13 +58,14 @@ class AuthActivity : AppCompatActivity() {
     }
 
     private fun showAlert() {
-        Toast.makeText(this, "Error al registrar", Toast.LENGTH_SHORT)
+        Toast.makeText(this, "Error al registrar", Toast.LENGTH_SHORT).show()
     }
 
     private fun goHome(email:String, provedor:ProviderType) {
         val homeIntent = Intent(this,HomeActivity::class.java).apply {
             putExtra("email", email)
             putExtra("provedor", provedor.name)
+            startActivity(this)
         }
     }
 }
