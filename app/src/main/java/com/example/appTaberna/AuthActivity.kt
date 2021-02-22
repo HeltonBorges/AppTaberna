@@ -3,9 +3,11 @@ package com.example.appTaberna
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 
@@ -51,7 +53,12 @@ class AuthActivity : AppCompatActivity() {
             }
         }
 
+        session()
+    }
 
+    override fun onStart() {
+        super.onStart()
+        findViewById<ConstraintLayout>(R.id.authLayout).visibility = View.VISIBLE
     }
 
     private fun showAlert() {
@@ -64,5 +71,16 @@ class AuthActivity : AppCompatActivity() {
             putExtra("provedor", provedor.name)
             startActivity(this)
         }
+    }
+
+    private fun session() {
+        val prefs = this.getSharedPreferences(getString(R.string.prefs_file), MODE_PRIVATE)
+        val email = prefs.getString("email", null)
+        val provedor = prefs.getString("provider", null)
+        if(email != null && provedor != null){
+            findViewById<ConstraintLayout>(R.id.authLayout).visibility = View.INVISIBLE
+            goHome(email, ProviderType.valueOf(provedor))
+        }
+
     }
 }
