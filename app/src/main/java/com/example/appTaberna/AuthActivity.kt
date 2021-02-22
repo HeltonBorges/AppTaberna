@@ -1,11 +1,8 @@
-package com.example.appbarproyect
+package com.example.appTaberna
 
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.AttributeSet
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -61,8 +58,8 @@ class AuthActivity : AppCompatActivity() {
         Toast.makeText(this, "Error al registrar", Toast.LENGTH_SHORT).show()
     }
 
-    private fun goHome(email:String, provedor:ProviderType) {
-        val homeIntent = Intent(this,HomeActivity::class.java).apply {
+    private fun goHome(email:String, provedor: ProviderType) {
+        val homeIntent = Intent(this, HomeActivity::class.java).apply {
             putExtra("email", email)
             putExtra("provedor", provedor.name)
             startActivity(this)
