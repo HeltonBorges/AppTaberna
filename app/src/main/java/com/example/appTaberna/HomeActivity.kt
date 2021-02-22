@@ -1,6 +1,7 @@
 package com.example.appTaberna
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -35,6 +36,15 @@ class HomeActivity : AppCompatActivity() {
             FirebaseAuth.getInstance().signOut()
             this.onBackPressed()
         }
+
+        findViewById<Button>(R.id.btLogOut).setOnClickListener {
+            val homeIntent = Intent(this, ClientMainActivity::class.java).apply {
+                putExtra("email", email)
+                putExtra("provedor", provedor)
+                startActivity(this)
+            }
+        }
+
 
         //guardado de datos
 
