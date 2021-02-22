@@ -8,12 +8,15 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.core.content.edit
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 enum class ProviderType{
     BASIC,GOOGLE
 }
 
 class HomeActivity : AppCompatActivity() {
+
+    private val db = FirebaseFirestore.getInstance()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -37,7 +40,7 @@ class HomeActivity : AppCompatActivity() {
             this.onBackPressed()
         }
 
-        findViewById<Button>(R.id.btLogOut).setOnClickListener {
+        findViewById<Button>(R.id.btPrincipalCliente).setOnClickListener {
             val homeIntent = Intent(this, ClientMainActivity::class.java).apply {
                 putExtra("email", email)
                 putExtra("provedor", provedor)
