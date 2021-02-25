@@ -1,9 +1,9 @@
 package com.example.appTaberna
 
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import androidx.core.content.edit
@@ -17,6 +17,7 @@ enum class ProviderType{
 class HomeActivity : AppCompatActivity() {
 
     private val db = FirebaseFirestore.getInstance()
+    var listaProduccto: MutableList<Producto> = mutableListOf()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -40,14 +41,26 @@ class HomeActivity : AppCompatActivity() {
             this.onBackPressed()
         }
 
-        findViewById<Button>(R.id.btPrincipalCliente).setOnClickListener {
-            val homeIntent = Intent(this, ClientMainActivity::class.java).apply {
-                putExtra("email", email)
-                putExtra("provedor", provedor)
-                startActivity(this)
-            }
-        }
+        cargarlista()
 
+        findViewById<Button>(R.id.btPrincipalCliente).setOnClickListener {
+
+
+            val nombre = findViewById<TextView>(R.id.edtxtName).text.toString()
+            val address = findViewById<TextView>(R.id.edtxtAddress).text.toString()
+            if (email != null) {
+                db.collection("users").document(email).set(
+                        hashMapOf("nombre" to nombre,
+                                "provider" to provedor,
+                                "address" to address)
+                )
+            }
+            val homeIntent = Intent(this, ClientMainActivity::class.java).apply {
+               putExtra("email", email)
+               putExtra("provedor", provedor)
+               startActivity(this)
+           }
+        }
 
         //guardado de datos
 
@@ -58,6 +71,24 @@ class HomeActivity : AppCompatActivity() {
             putString("provider", provedor)
                 .apply()
         }
+
+    }
+
+    fun cargarlista(){
+        val TAG = "App"
+        db.collection("productos")
+                .get()
+                .addOnSuccessListener { documents ->
+                    for (document in documents) {
+                        listaProduccto.add(Producto(document.id,
+                                document.get("Descripcion") as String,
+                                document.get("Precio") as String))
+                        Log.d(TAG, "$listaProduccto")
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.w(TAG, "Error getting documents: ", exception)
+                }
 
     }
 
