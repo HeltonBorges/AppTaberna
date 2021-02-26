@@ -32,13 +32,10 @@ class FirstFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.findViewById<Button>(R.id.button_first).setOnClickListener {
-            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
-        }
-
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerview)
         val adapter = ProductoListAdapter {
             Toast.makeText(requireContext(), it.descripcion, Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
         }
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -47,7 +44,7 @@ class FirstFragment : Fragment() {
 
     }
 
-    fun cargarlista(adapter: ProductoListAdapter){
+    private fun cargarlista(adapter: ProductoListAdapter){
         val TAG = "App"
         db.collection("productos")
                 .get()
@@ -59,14 +56,14 @@ class FirstFragment : Fragment() {
                         Log.d(TAG, "$listaProduccto")
                     }
                     adapter.submitList(listaProduccto)
-                    //adapter.onItemClick = {
-                      //  Toast.makeText(requireContext(), "${it.descripcion}", Toast.LENGTH_SHORT).show()
-                    //}
-
                 }
                 .addOnFailureListener { exception ->
                     Log.w(TAG, "Error getting documents: ", exception)
                 }
-
     }
+
+    //view.findViewById<Button>(R.id.button_first).setOnClickListener {
+      //  findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+    //}
+
 }
