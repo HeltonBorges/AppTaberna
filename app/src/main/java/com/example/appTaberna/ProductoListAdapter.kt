@@ -20,10 +20,18 @@ class ProductoListAdapter : ListAdapter<Producto, ProductoListAdapter.WordViewHo
     }
 
     class WordViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val wordItemView: TextView = itemView.findViewById(R.id.textView)
+        private val descripcionItemView: TextView = itemView.findViewById(R.id.txtViewDescripcion)
+        private val precioItemView: TextView = itemView.findViewById(R.id.txtViewPrecio)
+
+        //init {
+          //  itemView.setOnClickListener {
+            //    onItemClick?.invoke(getItem(adapterPosition))
+            //}
+        //}
 
         fun bind(producto: Producto) {
-            wordItemView.text = producto.descripcion
+            descripcionItemView.text = producto.descripcion
+            precioItemView.text = producto.precio
         }
 
         companion object {

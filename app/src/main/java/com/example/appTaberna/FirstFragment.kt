@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Adapter
 import android.widget.Button
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -39,12 +41,11 @@ class FirstFragment : Fragment() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        cargarlista()
-        adapter.submitList(listaProduccto)
+        cargarlista(adapter)
 
     }
 
-    fun cargarlista(){
+    fun cargarlista(adapter: ProductoListAdapter){
         val TAG = "App"
         db.collection("productos")
                 .get()
@@ -55,6 +56,11 @@ class FirstFragment : Fragment() {
                                 document.get("Precio") as String))
                         Log.d(TAG, "$listaProduccto")
                     }
+                    adapter.submitList(listaProduccto)
+                    //adapter.onItemClick = {
+                      //  Toast.makeText(requireContext(), "${it.descripcion}", Toast.LENGTH_SHORT).show()
+                    //}
+
                 }
                 .addOnFailureListener { exception ->
                     Log.w(TAG, "Error getting documents: ", exception)
