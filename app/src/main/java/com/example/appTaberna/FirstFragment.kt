@@ -37,7 +37,9 @@ class FirstFragment : Fragment() {
         }
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerview)
-        val adapter = ProductoListAdapter()
+        val adapter = ProductoListAdapter {
+            Toast.makeText(requireContext(), it.descripcion, Toast.LENGTH_SHORT).show()
+        }
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 

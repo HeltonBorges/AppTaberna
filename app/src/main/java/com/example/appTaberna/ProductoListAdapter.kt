@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
-class ProductoListAdapter : ListAdapter<Producto, ProductoListAdapter.WordViewHolder>(WORDS_COMPARATOR) {
+class ProductoListAdapter(private val listener: (Producto)-> Unit) : ListAdapter<Producto, ProductoListAdapter.WordViewHolder>(WORDS_COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WordViewHolder {
         return WordViewHolder.create(parent)
@@ -16,18 +16,13 @@ class ProductoListAdapter : ListAdapter<Producto, ProductoListAdapter.WordViewHo
 
     override fun onBindViewHolder(holder: WordViewHolder, position: Int) {
         val current = getItem(position)
+        holder.itemView.setOnClickListener { listener(current) }
         holder.bind(current)
     }
 
     class WordViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val descripcionItemView: TextView = itemView.findViewById(R.id.txtViewDescripcion)
         private val precioItemView: TextView = itemView.findViewById(R.id.txtViewPrecio)
-
-        //init {
-          //  itemView.setOnClickListener {
-            //    onItemClick?.invoke(getItem(adapterPosition))
-            //}
-        //}
 
         fun bind(producto: Producto) {
             descripcionItemView.text = producto.descripcion
